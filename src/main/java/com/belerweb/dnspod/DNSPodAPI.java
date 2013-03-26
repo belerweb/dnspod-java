@@ -22,8 +22,9 @@ import com.belerweb.dnspod.result.VersionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * @author Jun
+ * DNSPod API java wrapper implements. See https://www.dnspod.cn/client/user_api_doc.pdf for detail.
  * 
+ * @author Jun
  */
 public final class DNSPodAPI {
 
@@ -31,6 +32,12 @@ public final class DNSPodAPI {
   private static final String API_VERSION = "Info.Version";
   private static final String API_USER_DETAIL = "User.Detail";
   private static final String API_USER_MODIFY = "User.Modify";
+
+  public static final String CONFIG_KEY_LOGIN_EMAIL = "DNSPod.api.login_email";
+  public static final String CONFIG_KEY_LOGIN_PASSWORD = "DNSPod.api.login_password";
+  public static final String CONFIG_KEY_FORMAT = "DNSPod.api.format";
+  public static final String CONFIG_KEY_LANG = "DNSPod.api.lang";
+  public static final String CONFIG_KEY_ERROR_ON_EMPTY = "DNSPod.api.error_on_empty";
 
   public static final String PARAM_NAME_LOGIN_EMAIL = "login_email";
   public static final String PARAM_NAME_LOGIN_PASSWORD = "login_password";
@@ -74,14 +81,31 @@ public final class DNSPodAPI {
     this.objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd mm:dd:ss"));
   }
 
+  /**
+   * Get the version of current API.
+   * 
+   * @return {@link VersionResult}
+   */
   public VersionResult getVersion() {
     return execute(API_VERSION, createCommonParam(), VersionResult.class);
   }
 
+  /**
+   * Get the API login user detail.
+   * 
+   * @return {@link UserDetailResult}
+   */
   public UserDetailResult getUserDetail() {
     return execute(API_USER_DETAIL, createCommonParam(), UserDetailResult.class);
   }
 
+  /**
+   * @param realName User's real name. If a company account, it represent company name.
+   * @param nick Nickname, represent how to call when someone contact you.
+   * @param telephone Mobile phone number.
+   * @param im Tencent QQ Number
+   * @return {@link Result}
+   */
   public Result modifyUser(String realName, String nick, String telephone, String im) {
     List<NameValuePair> param = createCommonParam();
     param.add(new BasicNameValuePair("real_name", realName));
@@ -119,25 +143,38 @@ public final class DNSPodAPI {
 
   }
 
+  /**
+   * DNSPod API factory, use to create a API instance.
+   * 
+   * @author Jun
+   */
   public static final class DNSPodAPIFactory {
+    /**
+     * Create DNSPodAPI use environment variable or system properties. System properties value will
+     * override environment variable value with the same name.
+     * 
+     * @see {@link DNSPodAPIFactory#create(Properties)} for detail.
+     * 
+     * @return {@link DNSPodAPI}
+     */
     public static DNSPodAPI create() {
       // check config from env
-      String loginEmail = System.getenv("DNSPod.api.login_email");
-      String loginPassword = System.getenv("DNSPod.api.login_password");
-      String format = System.getenv("DNSPod.api.format");
-      String lang = System.getenv("DNSPod.api.lang");
-      String errorOnEmpty = System.getenv("DNSPod.api.error_on_empty");
+      String loginEmail = System.getenv(CONFIG_KEY_LOGIN_EMAIL);
+      String loginPassword = System.getenv(CONFIG_KEY_LOGIN_PASSWORD);
+      String format = System.getenv(CONFIG_KEY_FORMAT);
+      String lang = System.getenv(CONFIG_KEY_LANG);
+      String errorOnEmpty = System.getenv(CONFIG_KEY_ERROR_ON_EMPTY);
 
       // check config from system properties
-      loginEmail = System.getProperty("DNSPod.api.login_email", loginEmail);
-      loginPassword = System.getProperty("DNSPod.api.login_password", loginPassword);
+      loginEmail = System.getProperty(CONFIG_KEY_LOGIN_EMAIL, loginEmail);
+      loginPassword = System.getProperty(CONFIG_KEY_LOGIN_PASSWORD, loginPassword);
       format =
-          System.getProperty("DNSPod.api.format", format == null
+          System.getProperty(CONFIG_KEY_FORMAT, format == null
               ? PARAM_DEFAULT_VALUE_FORMAT
               : format);
-      lang = System.getProperty("DNSPod.api.lang", lang == null ? PARAM_DEFAULT_VALUE_LANG : lang);
+      lang = System.getProperty(CONFIG_KEY_LANG, lang == null ? PARAM_DEFAULT_VALUE_LANG : lang);
       errorOnEmpty =
-          System.getProperty("DNSPod.api.error_on_empty", errorOnEmpty == null
+          System.getProperty(CONFIG_KEY_ERROR_ON_EMPTY, errorOnEmpty == null
               ? PARAM_DEFAULT_VALUE_ERROR_ON_EMPTY
               : errorOnEmpty);
 
@@ -150,6 +187,15 @@ public final class DNSPodAPI {
       return create(properties);
     }
 
+    /**
+     * Create DNSPodAPI use specified properties. Key {@link DNSPodAPI#CONFIG_KEY_LOGIN_EMAIL} hold
+     * login email. Key {@link DNSPodAPI#CONFIG_KEY_LOGIN_PASSWORD} hold login password. Key
+     * {@link DNSPodAPI#CONFIG_KEY_LANG} hold message language. Key
+     * {@link DNSPodAPI#CONFIG_KEY_ERROR_ON_EMPTY} hold if error on empty.
+     * 
+     * @param properties
+     * @return {@link DNSPodAPI}
+     */
     public static DNSPodAPI create(Properties properties) {
       return new DNSPodAPI(properties);
     }
