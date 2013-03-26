@@ -12,6 +12,9 @@ public class ApiTest {
 
   private ObjectMapper objectMapper = new ObjectMapper();
 
+  /**
+   * Due I do not have enough test account, I can do simple test only.
+   */
   @Test
   public void test() {
     try {
@@ -21,6 +24,7 @@ public class ApiTest {
       debug(api.getUserDetail());
       debug(api.modifyUser("xxx", "xxx", "12345678910", "00000000"));
       debug(api.modifyUserPassword("old", "new"));
+      debug(api.modifyUserEmail("test@test.com", "test@test.com", "123456"));
     } catch (Exception e) {
       e.printStackTrace();
       Assert.assertTrue(false);
