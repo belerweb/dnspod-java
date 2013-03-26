@@ -147,6 +147,59 @@ public final class DNSPodAPI {
     return execute(API_USER_EMAIL_MODIFY, param, Result.class);
   }
 
+  // TODO Telephoneverify.Code
+  // TODO User.Log
+  // TODO Domain.Create
+  // TODO Domain.List
+  // TODO Domain.Remove
+  // TODO Domain.Status
+  // TODO Domain.Info
+  // TODO Domain.Log
+  // TODO Domain.Searchenginepush
+  // TODO Domain.Urlincn
+  // TODO Domainshare.Create
+  // TODO Domainshare.List
+  // TODO Domainshare.Modify
+  // TODO Domainshare.Remove
+  // TODO Domain.Transfer
+  // TODO Domain.Lock
+  // TODO Domain.Lockstatus
+  // TODO Domain.Unlock
+  // TODO Domainalias.List
+  // TODO Domainalias.Create
+  // TODO Domainalias.Remove
+  // TODO Domaingroup.List
+  // TODO Domaingroup.Create
+  // TODO Domaingroup.Modify
+  // TODO Domaingroup.Remove
+  // TODO Domain.Changegroup
+  // TODO Domain.Ismark
+  // TODO Domain.Remark
+  // TODO Domain.Purview
+  // TODO Domain.Acquire
+  // TODO Domain.Acquiresend
+  // TODO Domain.Acquirevalidate
+  // TODO Record.Type
+  // TODO Record.Line
+  // TODO Record.Create
+  // TODO Record.List
+  // TODO Record.Modify
+  // TODO Record.Remove
+  // TODO Record.Ddns
+  // TODO Record.Remark
+  // TODO Record.Info
+  // TODO Record.Status
+  // TODO Monitor.Listsubdomain
+  // TODO Monitor.List
+  // TODO Monitor.Create
+  // TODO Monitor.Modify
+  // TODO Monitor.Remove
+  // TODO Monitor.Info
+  // TODO Monitor.Setstatus
+  // TODO Monitor.Gethistory
+  // TODO Monitor.Userdesc
+  // TODO Monitor.Getdowns
+
   private List<NameValuePair> createCommonParam() {
     List<NameValuePair> parameters = new ArrayList<NameValuePair>();
     parameters.add(new BasicNameValuePair(PARAM_NAME_LOGIN_EMAIL, email));
