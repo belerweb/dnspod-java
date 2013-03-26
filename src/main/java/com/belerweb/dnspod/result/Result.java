@@ -5,11 +5,21 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * DNSPod API's common result wrapper.
+ * 
+ * @author Jun
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Result {
 
   protected Status status;
 
+  /**
+   * Check whether or not the result is successful.
+   * 
+   * @return true if success, or else false.
+   */
   public boolean isSuccess() {
     return 1 == status.getCode();
   }
@@ -18,8 +28,12 @@ public class Result {
     return status;
   }
 
+  /**
+   * DNSPod API's common result.
+   * 
+   * @author Jun
+   */
   public static class Status {
-
     private int code;
     private String message;
 

@@ -20,6 +20,7 @@ public class ApiTest {
       debug(api.getVersion());
       debug(api.getUserDetail());
       debug(api.modifyUser("xxx", "xxx", "12345678910", "00000000"));
+      debug(api.modifyUserPassword("old", "new"));
     } catch (Exception e) {
       e.printStackTrace();
       Assert.assertTrue(false);

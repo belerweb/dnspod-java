@@ -32,6 +32,7 @@ public final class DNSPodAPI {
   private static final String API_VERSION = "Info.Version";
   private static final String API_USER_DETAIL = "User.Detail";
   private static final String API_USER_MODIFY = "User.Modify";
+  private static final String API_USER_PASSWORD_MODIFY = "Userpasswd.Modify";
 
   public static final String CONFIG_KEY_LOGIN_EMAIL = "DNSPod.api.login_email";
   public static final String CONFIG_KEY_LOGIN_PASSWORD = "DNSPod.api.login_password";
@@ -113,6 +114,20 @@ public final class DNSPodAPI {
     param.add(new BasicNameValuePair("telephone", telephone));
     param.add(new BasicNameValuePair("im", im));
     return execute(API_USER_MODIFY, param, Result.class);
+  }
+
+  /**
+   * Modify current user's password.
+   * 
+   * @param oldPassword Old password.
+   * @param newPassword New password.
+   * @return {@link Result}
+   */
+  public Result modifyUserPassword(String oldPassword, String newPassword) {
+    List<NameValuePair> param = createCommonParam();
+    param.add(new BasicNameValuePair("old_password", oldPassword));
+    param.add(new BasicNameValuePair("new_password", newPassword));
+    return execute(API_USER_PASSWORD_MODIFY, param, Result.class);
   }
 
   private List<NameValuePair> createCommonParam() {
