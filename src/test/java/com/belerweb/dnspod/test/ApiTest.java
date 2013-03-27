@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import com.belerweb.dnspod.DNSPodAPI;
 import com.belerweb.dnspod.DNSPodAPI.DNSPodAPIFactory;
+import com.belerweb.dnspod.RecordLine;
+import com.belerweb.dnspod.RecordType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,6 +27,9 @@ public class ApiTest {
       debug(api.modifyUser("xxx", "xxx", "12345678910", "00000000"));
       debug(api.modifyUserPassword("old", "new"));
       debug(api.modifyUserEmail("test@test.com", "test@test.com", "123456"));
+
+      debug(api.modifyRecord(2049921, 21366982, "ddd", RecordType.A, RecordLine.DEFAULT,
+          "192.168.0.105", 1, 600));
     } catch (Exception e) {
       e.printStackTrace();
       Assert.assertTrue(false);

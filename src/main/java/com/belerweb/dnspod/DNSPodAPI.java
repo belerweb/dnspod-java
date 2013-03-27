@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -16,6 +17,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.belerweb.dnspod.result.ModifyRecordResult;
 import com.belerweb.dnspod.result.Result;
 import com.belerweb.dnspod.result.UserDetailResult;
 import com.belerweb.dnspod.result.VersionResult;
@@ -34,6 +36,8 @@ public final class DNSPodAPI {
   private static final String API_USER_MODIFY = "User.Modify";
   private static final String API_USER_PASSWORD_MODIFY = "Userpasswd.Modify";
   private static final String API_USER_EMAIL_MODIFY = "Useremail.Modify";
+
+  private static final String API_RECORD_MODIFY = "Record.Modify";
 
   public static final String CONFIG_KEY_LOGIN_EMAIL = "DNSPod.api.login_email";
   public static final String CONFIG_KEY_LOGIN_PASSWORD = "DNSPod.api.login_password";
@@ -184,6 +188,34 @@ public final class DNSPodAPI {
   // TODO Record.Create
   // TODO Record.List
   // TODO Record.Modify
+
+  /**
+   * Modify domian record
+   * 
+   * @param domianId Dmain ID
+   * @param recordId Record ID
+   * @param subDomain Host name, such as "www"
+   * @param recordType {@link RecordType}
+   * @param recordLine {@link RecordLine}
+   * @param value Record value, e.g. IP:8.8.8.8, CNMAE:cname.dnspod.com., MX:mail.dnspod.com.
+   * @param mx MX priority, effective when record type is MX. Valid value is 1 to 20.
+   * @param tt TTL. Valid value is 1 to 604800.
+   * @return
+   */
+  public ModifyRecordResult modifyRecord(int domianId, int recordId, String subDomain,
+      RecordType recordType, RecordLine recordLine, String value, int mx, int tt) {
+    List<NameValuePair> param = createCommonParam();
+    param.add(new BasicNameValuePair("domain_id", String.valueOf(domianId)));
+    param.add(new BasicNameValuePair("record_id", String.valueOf(recordId)));
+    param.add(new BasicNameValuePair("sub_domain", subDomain));
+    param.add(new BasicNameValuePair("record_type", recordType.getValue()));
+    param.add(new BasicNameValuePair("record_line", recordLine.getValue()));
+    param.add(new BasicNameValuePair("value", value));
+    param.add(new BasicNameValuePair("mx", String.valueOf(mx)));
+    param.add(new BasicNameValuePair("tt", String.valueOf(tt)));
+    return execute(API_RECORD_MODIFY, param, ModifyRecordResult.class);
+  }
+
   // TODO Record.Remove
   // TODO Record.Ddns
   // TODO Record.Remark
@@ -215,7 +247,7 @@ public final class DNSPodAPI {
     HttpPost post = new HttpPost(API_SERVER + api);
 
     try {
-      post.setEntity(new UrlEncodedFormEntity(parameters));
+      post.setEntity(new UrlEncodedFormEntity(parameters, Consts.UTF_8));
       HttpResponse respose = http.execute(post);
       return objectMapper.readValue(respose.getEntity().getContent(), resultType);
     } catch (UnsupportedEncodingException e) {
