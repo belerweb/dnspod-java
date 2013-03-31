@@ -1,7 +1,11 @@
 package com.belerweb.dnspod.result;
 
-
-
+/**
+ * API result wrapper of modify record.
+ * 
+ * @author jun
+ * 
+ */
 public class ModifyRecordResult extends Result {
 
   private Record record;
