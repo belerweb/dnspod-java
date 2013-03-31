@@ -2,6 +2,12 @@ package com.belerweb.dnspod.result;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * API result wrapper of get user's detail.
+ * 
+ * @author jun
+ * 
+ */
 public class UserDetailResult extends Result {
 
   @JsonProperty("info")
