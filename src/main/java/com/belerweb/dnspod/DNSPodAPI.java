@@ -242,6 +242,14 @@ public final class DNSPodAPI {
     return parameters;
   }
 
+  /**
+   * Send request to DNSPod's API, and wrapper json result to bean.
+   * 
+   * @param api DNSPod's API's path.
+   * @param parameters Parameters sent to DNSPod's API.
+   * @param resultType Bean result type, see {@link Result}.
+   * @return Bean wrapper result.
+   */
   private <T extends Result> T execute(String api, List<NameValuePair> parameters,
       Class<T> resultType) {
     HttpPost post = new HttpPost(API_SERVER + api);
