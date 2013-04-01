@@ -232,6 +232,11 @@ public final class DNSPodAPI {
   // TODO Monitor.Userdesc
   // TODO Monitor.Getdowns
 
+  /**
+   * Common parameters which all DNSPod's API need.
+   * 
+   * @return Parameters
+   */
   private List<NameValuePair> createCommonParam() {
     List<NameValuePair> parameters = new ArrayList<NameValuePair>();
     parameters.add(new BasicNameValuePair(PARAM_NAME_LOGIN_EMAIL, email));
