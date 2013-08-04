@@ -156,7 +156,7 @@ public final class DNSPodAPI {
   // TODO Telephoneverify.Code
   // TODO User.Log
   // TODO Domain.Create
-  // TODO Domain.Listoffset
+  // TODO Domain.List
   // TODO Domain.Remove
   // TODO Domain.Status
   // TODO Domain.Info    return execute(API_VERSION, createCommonParam(), VersionResult.class);
@@ -180,7 +180,7 @@ public final class DNSPodAPI {
   // TODO Domaingroup.Modify
   // TODO Domaingroup.Remove
   // TODO Domain.Changegroup
-  // TODO Domain.Ismarkextends Result
+  // TODO Domain.Ismark
   // TODO Domain.Remark
   // TODO Domain.Purview
   // TODO Domain.Acquire
