@@ -10,7 +10,7 @@
 
 	<groupId>com.belerweb</groupId>
 	<artifactId>dnspod-java</artifactId>
-	<version>1.0.0-beta</version>
+	<version>1.0.1-beta</version>
 	<packaging>jar</packaging>
 
 	<name>DNSPod JAVA</name>

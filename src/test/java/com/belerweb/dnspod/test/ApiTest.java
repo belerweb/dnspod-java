@@ -36,6 +36,13 @@ public class ApiTest {
     }
   }
 
+  @Test
+  public void testGetRecordList() {
+    DNSPodAPI api = DNSPodAPIFactory.create();
+    debug(api.getRecordList(Integer.valueOf(System.getenv("DNSPod.api.domainId")), null, null,
+        "www"));
+  }
+
   private void debug(Object obj) {
     try {
       System.out.println(objectMapper.writeValueAsString(obj));
