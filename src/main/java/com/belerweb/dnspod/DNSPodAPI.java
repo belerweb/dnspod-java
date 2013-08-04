@@ -17,6 +17,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.belerweb.dnspod.result.GetResultListResult;
 import com.belerweb.dnspod.result.ModifyRecordResult;
 import com.belerweb.dnspod.result.Result;
 import com.belerweb.dnspod.result.UserDetailResult;
@@ -38,6 +39,7 @@ public final class DNSPodAPI {
   private static final String API_USER_EMAIL_MODIFY = "Useremail.Modify";
 
   private static final String API_RECORD_MODIFY = "Record.Modify";
+  private static final String API_RECORD_LIST = "Record.List";
 
   public static final String CONFIG_KEY_LOGIN_EMAIL = "DNSPod.api.login_email";
   public static final String CONFIG_KEY_LOGIN_PASSWORD = "DNSPod.api.login_password";
@@ -157,7 +159,8 @@ public final class DNSPodAPI {
   // TODO Domain.List
   // TODO Domain.Remove
   // TODO Domain.Status
-  // TODO Domain.Info
+  // TODO Domain.Info    return execute(API_VERSION, createCommonParam(), VersionResult.class);
+
   // TODO Domain.Log
   // TODO Domain.Searchenginepush
   // TODO Domain.Urlincn
@@ -192,7 +195,7 @@ public final class DNSPodAPI {
   /**
    * Modify domian record
    * 
-   * @param domianId Dmain ID
+   * @param domainId Dmain ID
    * @param recordId Record ID
    * @param subDomain Host name, such as "www"
    * @param recordType {@link RecordType}
@@ -202,10 +205,10 @@ public final class DNSPodAPI {
    * @param tt TTL. Valid value is 1 to 604800.
    * @return
    */
-  public ModifyRecordResult modifyRecord(int domianId, int recordId, String subDomain,
+  public ModifyRecordResult modifyRecord(int domainId, int recordId, String subDomain,
       RecordType recordType, RecordLine recordLine, String value, int mx, int tt) {
     List<NameValuePair> param = createCommonParam();
-    param.add(new BasicNameValuePair("domain_id", String.valueOf(domianId)));
+    param.add(new BasicNameValuePair("domain_id", String.valueOf(domainId)));
     param.add(new BasicNameValuePair("record_id", String.valueOf(recordId)));
     param.add(new BasicNameValuePair("sub_domain", subDomain));
     param.add(new BasicNameValuePair("record_type", recordType.getValue()));
@@ -214,6 +217,32 @@ public final class DNSPodAPI {
     param.add(new BasicNameValuePair("mx", String.valueOf(mx)));
     param.add(new BasicNameValuePair("tt", String.valueOf(tt)));
     return execute(API_RECORD_MODIFY, param, ModifyRecordResult.class);
+  }
+
+  /**
+   * Get Record list
+   * @param domainId Dmain ID
+   * @param offset Offset for record, first record's offset is 0. Could be NULL.
+   * @param length A number for limit records if you have too much records. Could be NULL.
+   * @param subDomain sub domain. If set, only return the record of this domain. Could be NULL.
+   * @return {@link GetResultListResult}
+   */
+  public GetResultListResult getRecordList(int domainId, Integer offset, Integer length,
+      String subDomain) {
+    List<NameValuePair> param = createCommonParam();
+    param.add(new BasicNameValuePair("domain_id", String.valueOf(domainId)));
+    if (null != offset) {
+      param.add(new BasicNameValuePair("offset", String.valueOf(offset)));
+    }
+    if (null != length) {
+      param.add(new BasicNameValuePair("length", String.valueOf(length)));
+    }
+    if (null != subDomain) {
+      param.add(new BasicNameValuePair("sub_domain", subDomain));
+    }
+
+    return execute(API_RECORD_LIST, param, GetResultListResult.class);
+
   }
 
   // TODO Record.Remove
@@ -231,7 +260,6 @@ public final class DNSPodAPI {
   // TODO Monitor.Gethistory
   // TODO Monitor.Userdesc
   // TODO Monitor.Getdowns
-
   /**
    * Common parameters which all DNSPod's API need.
    * 
@@ -255,8 +283,7 @@ public final class DNSPodAPI {
    * @param resultType Bean result type, see {@link Result}.
    * @return Bean wrapper result.
    */
-  private <T extends Result> T execute(String api, List<NameValuePair> parameters,
-      Class<T> resultType) {
+  private <T> T execute(String api, List<NameValuePair> parameters, Class<T> resultType) {
     HttpPost post = new HttpPost(API_SERVER + api);
 
     try {
